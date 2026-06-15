@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Brief — 16 June 2026</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #131920;
+    --surface2: #1a2130;
+    --border: #2a3340;
+    --text: #e6edf3;
+    --muted: #7d8ea0;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #ffa657;
+    --teal: #39d353;
+    --gold: #ffd700;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(88,166,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88,166,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 30s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  @keyframes gridShift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .section {
+    margin-bottom: 14px;
+    animation: fadeUp 0.45s ease both;
+  }
+  .section:nth-child(1) { animation-delay: 0.00s; }
+  .section:nth-child(2) { animation-delay: 0.06s; }
+  .section:nth-child(3) { animation-delay: 0.12s; }
+  .section:nth-child(4) { animation-delay: 0.18s; }
+  .section:nth-child(5) { animation-delay: 0.24s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.36s; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.4s ease both;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .logo {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.2);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+    background: linear-gradient(90deg, #e6edf3 0%, #58a6ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .live-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    margin-right: 4px; vertical-align: middle;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .date-badge {
+    text-align: right;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    flex-shrink: 0;
+  }
+  .date-badge .day  { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
+  .date-badge .date { font-size: 16px; font-weight: 700; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .panel-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.9px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── WEATHER ── */
+  .wx-row1 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .wx-icon { font-size: 44px; line-height: 1; flex-shrink: 0; }
+  .wx-temp-block { flex-shrink: 0; }
+  .wx-temp {
+    font-size: 48px; font-weight: 800; color: var(--orange);
+    line-height: 1; letter-spacing: -3px;
+    display: inline;
+  }
+  .wx-unit { font-size: 22px; color: var(--muted); vertical-align: super; }
+  .wx-desc { margin-top: 4px; }
+  .wx-cond { font-size: 15px; font-weight: 600; color: var(--text); }
+  .wx-feels { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .wx-stats {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .wx-stat {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 6px 10px;
+    border-right: 1px solid var(--border);
+  }
+  .wx-stat:last-child { border-right: none; }
+  .wx-stat-val   { font-size: 18px; font-weight: 700; }
+  .wx-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ── MARKETS TICKER ── */
+  .markets-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .ticker-outer {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .markets-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    padding: 0 14px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.9px; color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ticker-clip {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    animation: tickerScroll 40s linear infinite;
+    will-change: transform;
+    white-space: nowrap;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .tick {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 0 20px;
+    border-right: 1px solid rgba(42,51,64,0.5);
+    flex-shrink: 0;
+  }
+  .tick-name { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .tick-val  { font-size: 14px; font-weight: 700; }
+  .tick-chg  { font-size: 11px; font-weight: 600; }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
+  .flat { color: var(--muted); }
+
+  /* ── 5-SECOND BRIEF ── */
+  .bullets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .bullet-item {
+    display: flex; gap: 9px;
+    align-items: flex-start;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px; line-height: 1.5; color: var(--text);
+  }
+  .bullet-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── TOP STORIES ── */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .story-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    transition: border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .story-card.geo::before     { background: var(--red); }
+  .story-card.markets::before { background: var(--green); }
+  .story-card.conflict::before{ background: var(--orange); }
+  .story-card.culture::before { background: var(--teal); }
+  .story-card:hover { border-color: rgba(88,166,255,0.25); }
+
+  .story-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 7px; gap: 6px;
+  }
+  .tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; padding: 2px 7px;
+    border-radius: 4px; border: 1px solid;
+    white-space: nowrap;
+  }
+  .tag.geo      { color: var(--red);    border-color: rgba(248,81,73,0.35);   background: rgba(248,81,73,0.09); }
+  .tag.markets  { color: var(--green);  border-color: rgba(63,185,80,0.35);   background: rgba(63,185,80,0.09); }
+  .tag.conflict { color: var(--orange); border-color: rgba(255,166,87,0.35);  background: rgba(255,166,87,0.09); }
+  .tag.culture  { color: var(--teal);   border-color: rgba(57,211,83,0.35);   background: rgba(57,211,83,0.09); }
+
+  .story-source { font-size: 10px; color: var(--muted); flex-shrink: 0; }
+  .story-headline {
+    font-size: 13px; font-weight: 600; line-height: 1.45; margin-bottom: 6px;
+  }
+  .story-headline a { color: var(--text); text-decoration: none; }
+  .story-headline a:hover { color: var(--accent); }
+  .story-summary { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ── SENTIMENT ── */
+  .sentiment-inner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .mood-emoji { font-size: 48px; line-height: 1; flex-shrink: 0; }
+  .mood-center { flex: 1; min-width: 0; }
+  .mood-title  { font-size: 16px; font-weight: 700; color: var(--green); margin-bottom: 3px; }
+  .mood-detail { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .mood-bar-outer {
+    height: 6px; background: var(--border); border-radius: 3px;
+    margin: 10px 0 4px; overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 48%, var(--red) 100%);
+  }
+  .mood-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .mood-right { flex-shrink: 0; text-align: center; }
+  .mood-score {
+    font-size: 38px; font-weight: 800; line-height: 1;
+    color: var(--green); letter-spacing: -2px;
+  }
+  .mood-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-top: 4px; }
+
+  /* ── RATES ── */
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .rate-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .rate-cell-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .rate-cell-val   { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .rate-trend {
+    display: inline-block;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.3px; padding: 2px 6px; border-radius: 4px;
+  }
+  .trend-up   { color: var(--red);   background: rgba(248,81,73,0.1); }
+  .trend-down { color: var(--green); background: rgba(63,185,80,0.1); }
+  .trend-hold { color: var(--muted); background: rgba(125,142,160,0.1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px;
+    justify-content: space-between;
+    animation: fadeIn 0.6s ease 0.5s both;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="header-title">Daily Brief</div>
+      <div class="header-sub"><span class="live-dot"></span>Tuesday, 16 June 2026 · Hong Kong</div>
+    </div>
+  </div>
+  <div class="date-badge">
+    <div class="day">Wk 25 · 2026</div>
+    <div class="date">16 Jun</div>
+  </div>
+</div>
+
+<!-- 1. WEATHER -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌩 Hong Kong Weather</div>
+    <div class="panel-body">
+      <div class="wx-row1">
+        <div class="wx-icon">⛈</div>
+        <div class="wx-temp-block">
+          <span class="wx-temp">31</span><span class="wx-unit">°C</span>
+        </div>
+        <div class="wx-desc">
+          <div class="wx-cond">Hot &amp; Humid · Afternoon Thunderstorms</div>
+          <div class="wx-feels">Feels like 38°C · Typhoon season active</div>
+        </div>
+      </div>
+      <div class="wx-stats">
+        <div class="wx-stat">
+          <div class="wx-stat-val">27°C</div>
+          <div class="wx-stat-label">Low tonight</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--accent)">88%</div>
+          <div class="wx-stat-label">Humidity</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--yellow)">High</div>
+          <div class="wx-stat-label">UV Index</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val">⛈</div>
+          <div class="wx-stat-label">Bring umbrella</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. MARKETS TICKER -->
+<div class="section">
+  <div class="markets-wrap">
+    <div class="ticker-outer">
+      <div class="markets-label">📈 Markets</div>
+      <div class="ticker-clip">
+        <div class="ticker-track">
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,431.46</span><span class="tick-chg up">▲ 0.50%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,888.84</span><span class="tick-chg up">▲ 0.31%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">24,718.10</span><span class="tick-chg up">▲ 1.93%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">8,914.00</span><span class="tick-chg up">▲ 1.25%</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$86.51</span><span class="tick-chg down">▼ 3.9%</span></div>
+          <div class="tick"><span class="tick-name">Brent</span><span class="tick-val">$87.30</span><span class="tick-chg down">▼ 3.4%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,300+</span><span class="tick-chg up">▲ 0.8%</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.42%</span><span class="tick-chg down">▼ Iran deal</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.78</span><span class="tick-chg flat">→ Pegged</span></div>
+          <!-- duplicate for seamless loop -->
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,431.46</span><span class="tick-chg up">▲ 0.50%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,888.84</span><span class="tick-chg up">▲ 0.31%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">24,718.10</span><span class="tick-chg up">▲ 1.93%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">8,914.00</span><span class="tick-chg up">▲ 1.25%</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$86.51</span><span class="tick-chg down">▼ 3.9%</span></div>
+          <div class="tick"><span class="tick-name">Brent</span><span class="tick-val">$87.30</span><span class="tick-chg down">▼ 3.4%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,300+</span><span class="tick-chg up">▲ 0.8%</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.42%</span><span class="tick-chg down">▼ Iran deal</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.78</span><span class="tick-chg flat">→ Pegged</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 5-SECOND BRIEF -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">⚡ 5-Second Brief</div>
+    <div class="panel-body">
+      <div class="bullets-grid">
+        <div class="bullet-item"><span class="bullet-icon">🟢</span><span>Iran-US peace deal officially signed — Trump &amp; Vance sign MOU ending 107-day conflict; Strait of Hormuz to reopen Friday; oil hits 2-month low at $86</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🔴</span><span>B-52 bomber crashes at Edwards AFB, California — all 8 crew presumed dead in worst US Air Force accident in years; cause under investigation</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🟠</span><span>Netanyahu defies Trump: Israel will stay in Lebanon buffer zone "as long as necessary" — 570 km² occupied, directly conflicting with Iran deal terms</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🔵</span><span>EU's Kallas: China trained ~200 Russian soldiers in drone warfare — new sanctions on Chinese entities; Beijing denies, calls it "contrary to neutral stance"</span></div>
+        <div class="bullet-item"><span class="bullet-icon">⚪</span><span>G7: Zelensky proposes direct face-to-face talks with Putin in the US — Putin ignores G7 invite; Trump backs direct talks push</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TOP STORIES -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">📰 Top Stories <span style="margin-left:6px;background:var(--border);border-radius:20px;padding:1px 8px;font-size:10px;">5</span></div>
+    <div class="panel-body">
+      <div class="stories-grid">
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Middle East</span>
+            <span class="story-source">Al Jazeera · SCMP</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/liveblog/2026/6/15/iran-war-live-tehran-says-peace-deal-ends-us-blockade-war-on-all-fronts" target="_blank">Iran-US peace deal signed — Trump confirms "all done," Hormuz opens Friday</a>
+          </div>
+          <div class="story-summary">Trump and Vance electronically signed a preliminary MOU on June 16, with a formal ceremony set for Switzerland. Iran's FM confirmed the agreement covers ceasefire across all fronts, including Lebanon. The deal ends 107 days of conflict and triggers Hormuz reopening — WTI crude fell nearly 4% on the news.</div>
+        </div>
+
+        <div class="story-card conflict">
+          <div class="story-meta">
+            <span class="tag conflict">Military</span>
+            <span class="story-source">SCMP · Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/6/15/us-air-force-b-52-bomber-crashes-after-takeoff-edwards-air-force-base-says" target="_blank">B-52 bomber crashes at Edwards AFB — all 8 crew presumed dead</a>
+          </div>
+          <div class="story-summary">A B-52 Stratofortress went down shortly after takeoff at Edwards Air Force Base in the Mojave Desert on June 15, leaving a towering black plume. The Air Force said "initial indications are that the crash was not survivable." The airfield was closed and a crash investigation board convened.</div>
+        </div>
+
+        <div class="story-card conflict">
+          <div class="story-meta">
+            <span class="tag conflict">Middle East</span>
+            <span class="story-source">Al Jazeera · Reuters</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/6/15/netanyahu-says-israel-wont-leave-occupied-land-in-lebanon" target="_blank">Netanyahu: Israel will stay in Lebanon "as long as necessary" — 570 km² occupied</a>
+          </div>
+          <div class="story-summary">Despite the Iran-US ceasefire deal that addresses Lebanon, PM Netanyahu declared Israel would maintain its military buffer zone. His defiant position reportedly conflicts with Trump's expectations and threatens the fragile regional agreement reached this week.</div>
+        </div>
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Geopolitics</span>
+            <span class="story-source">SCMP · Reuters</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.scmp.com/news/world/europe/article/3357208/eu-says-china-trained-russian-troops-bloc-weighs-tougher-stance-beijing" target="_blank">EU's Kallas: China trained Russian soldiers in drone warfare — new sanctions</a>
+          </div>
+          <div class="story-summary">EU foreign affairs chief Kaja Kallas announced verified intelligence showing China trained approximately 200 Russian troops — primarily in drone operations — under a bilateral agreement signed in July 2025. The EU sanctioned several Chinese entities. Beijing denied the reports as inconsistent with its neutral stance.</div>
+        </div>
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Diplomacy</span>
+            <span class="story-source">SCMP · Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.scmp.com/news/world/europe/article/3357217/zelensky-proposes-meeting-putin-us-after-russian-leader-ignores-g7-invitation" target="_blank">G7: Zelensky proposes meeting Putin in US after Kremlin snubs summit</a>
+          </div>
+          <div class="story-summary">At the G7 in France, Zelensky proposed a direct face-to-face meeting with Putin in the United States, saying he had discussed the venue with Trump and believed Putin would find it harder to refuse. The Kremlin ignored its G7 invitation and has yet to respond to the US venue proposal.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MARKET SENTIMENT -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌡 Market Sentiment</div>
+    <div class="panel-body">
+      <div class="sentiment-inner">
+        <div class="mood-emoji">📈</div>
+        <div class="mood-center">
+          <div class="mood-title">Cautious Risk-On</div>
+          <div class="mood-detail">The Iran-US deal is the dominant market event: oil fell nearly 4%, US 10Y yields dropped to 4.42% (2-month low), and equities rallied across all regions. Hang Seng led with +1.93% as Hormuz reopening eases supply chain fears for Asian markets. The remaining drag is Israel's Lebanon refusal, which keeps a tail risk on the ceasefire. Gold edged higher — suggesting markets aren't fully convinced conflict risks are resolved.</div>
+          <div class="mood-bar-outer">
+            <div class="mood-bar-fill" style="width:38%"></div>
+          </div>
+          <div class="mood-labels"><span>Greed</span><span>Neutral</span><span>Fear</span></div>
+        </div>
+        <div class="mood-right">
+          <div class="mood-score">62</div>
+          <div class="mood-score-label">Fear &amp; Greed<br>Index</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. INTEREST RATES & ECONOMY -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">💰 Markets &amp; Economy</div>
+    <div class="panel-body">
+      <div class="rates-grid">
+        <div class="rate-cell">
+          <div class="rate-cell-label">US Fed Funds</div>
+          <div class="rate-cell-val" style="color:var(--accent)">4.50–4.75%</div>
+          <span class="rate-trend trend-hold">Hold</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">RBA (AUS)</div>
+          <div class="rate-cell-val" style="color:var(--red)">4.35%</div>
+          <span class="rate-trend trend-up">↑ Hiked May</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">HIBOR 1M (HK)</div>
+          <div class="rate-cell-val" style="color:var(--muted)">N/A</div>
+          <span class="rate-trend trend-hold">Live unavail.</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">US CPI (May)</div>
+          <div class="rate-cell-val" style="color:var(--yellow)">3.8%</div>
+          <span class="rate-trend trend-hold">Sticky</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">AUD/USD</div>
+          <div class="rate-cell-val" style="color:var(--green)">~0.659</div>
+          <span class="rate-trend trend-down">↑ USD soft</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>🤖 Andy · 16 Jun 2026 · Sources: Al Jazeera, SCMP, CNN, Bloomberg, Reuters</span>
+  <span><a href="https://mhigasi-design.github.io/news-dashboard/" target="_blank" style="color:var(--accent);text-decoration:none;">🔗 mhigasi-design.github.io/news-dashboard</a> · Data: Mon 15 Jun close · Markets approximate · Not financial advice</span>
+</div>
+
+</body>
+</html>
