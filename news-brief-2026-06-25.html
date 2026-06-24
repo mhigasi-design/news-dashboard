@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Brief — 25 Jun 2026</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #131920;
+    --surface2: #1a2130;
+    --border: #2a3340;
+    --text: #e6edf3;
+    --muted: #7d8ea0;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #ffa657;
+    --teal: #39d353;
+    --gold: #ffd700;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(88,166,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88,166,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 30s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  @keyframes gridShift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .section {
+    margin-bottom: 14px;
+    animation: fadeUp 0.45s ease both;
+  }
+  .section:nth-child(1) { animation-delay: 0.00s; }
+  .section:nth-child(2) { animation-delay: 0.06s; }
+  .section:nth-child(3) { animation-delay: 0.12s; }
+  .section:nth-child(4) { animation-delay: 0.18s; }
+  .section:nth-child(5) { animation-delay: 0.24s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.36s; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.4s ease both;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .logo {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.2);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+    background: linear-gradient(90deg, #e6edf3 0%, #58a6ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .live-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    margin-right: 4px; vertical-align: middle;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .date-badge {
+    text-align: right;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    flex-shrink: 0;
+  }
+  .date-badge .day  { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
+  .date-badge .date { font-size: 16px; font-weight: 700; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .panel-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.9px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── WEATHER ── */
+  .wx-row1 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .wx-icon { font-size: 44px; line-height: 1; flex-shrink: 0; }
+  .wx-temp-block { flex-shrink: 0; }
+  .wx-temp {
+    font-size: 48px; font-weight: 800; color: var(--orange);
+    line-height: 1; letter-spacing: -3px;
+    display: inline;
+  }
+  .wx-unit { font-size: 22px; color: var(--muted); vertical-align: super; }
+  .wx-desc { margin-top: 4px; }
+  .wx-cond { font-size: 15px; font-weight: 600; color: var(--text); }
+  .wx-feels { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .wx-stats {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .wx-stat {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 6px 10px;
+    border-right: 1px solid var(--border);
+  }
+  .wx-stat:last-child { border-right: none; }
+  .wx-stat-val   { font-size: 18px; font-weight: 700; }
+  .wx-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ── MARKETS TICKER ── */
+  .markets-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .ticker-outer {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .markets-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    padding: 0 14px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.9px; color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ticker-clip {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    animation: tickerScroll 40s linear infinite;
+    will-change: transform;
+    white-space: nowrap;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .tick {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 0 20px;
+    border-right: 1px solid rgba(42,51,64,0.5);
+    flex-shrink: 0;
+  }
+  .tick-name { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .tick-val  { font-size: 14px; font-weight: 700; }
+  .tick-chg  { font-size: 11px; font-weight: 600; }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
+  .flat { color: var(--muted); }
+
+  /* ── 5-SECOND BRIEF ── */
+  .bullets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .bullet-item {
+    display: flex; gap: 9px;
+    align-items: flex-start;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px; line-height: 1.5; color: var(--text);
+  }
+  .bullet-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── TOP STORIES ── */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .story-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    transition: border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .story-card.geo::before     { background: var(--red); }
+  .story-card.policy::before  { background: var(--accent); }
+  .story-card.conflict::before{ background: var(--orange); }
+  .story-card.climate::before { background: var(--teal); }
+  .story-card:hover { border-color: rgba(88,166,255,0.25); }
+
+  .story-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 7px; gap: 6px;
+  }
+  .tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; padding: 2px 7px;
+    border-radius: 4px; border: 1px solid;
+    white-space: nowrap;
+  }
+  .tag.geo      { color: var(--red);    border-color: rgba(248,81,73,0.35);   background: rgba(248,81,73,0.09); }
+  .tag.policy   { color: var(--accent); border-color: rgba(88,166,255,0.35);  background: rgba(88,166,255,0.09); }
+  .tag.conflict { color: var(--orange); border-color: rgba(255,166,87,0.35);  background: rgba(255,166,87,0.09); }
+  .tag.climate  { color: var(--teal);   border-color: rgba(57,211,83,0.35);   background: rgba(57,211,83,0.09); }
+
+  .story-source { font-size: 10px; color: var(--muted); flex-shrink: 0; }
+  .story-headline {
+    font-size: 13px; font-weight: 600; line-height: 1.45; margin-bottom: 6px;
+  }
+  .story-headline a { color: var(--text); text-decoration: none; }
+  .story-headline a:hover { color: var(--accent); }
+  .story-summary { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ── SENTIMENT ── */
+  .sentiment-inner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .mood-emoji { font-size: 48px; line-height: 1; flex-shrink: 0; }
+  .mood-center { flex: 1; min-width: 0; }
+  .mood-title  { font-size: 16px; font-weight: 700; color: var(--orange); margin-bottom: 3px; }
+  .mood-detail { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .mood-bar-outer {
+    height: 6px; background: var(--border); border-radius: 3px;
+    margin: 10px 0 4px; overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 48%, var(--red) 100%);
+  }
+  .mood-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .mood-right { flex-shrink: 0; text-align: center; }
+  .mood-score {
+    font-size: 38px; font-weight: 800; line-height: 1;
+    color: var(--yellow); letter-spacing: -2px;
+  }
+  .mood-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-top: 4px; }
+
+  /* ── RATES ── */
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .rate-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .rate-cell-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .rate-cell-val   { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .rate-trend {
+    display: inline-block;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.3px; padding: 2px 6px; border-radius: 4px;
+  }
+  .trend-up   { color: var(--red);   background: rgba(248,81,73,0.1); }
+  .trend-hold { color: var(--muted); background: rgba(125,142,160,0.1); }
+  .trend-dn   { color: var(--green); background: rgba(63,185,80,0.1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px;
+    justify-content: space-between;
+    animation: fadeIn 0.6s ease 0.5s both;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="header-title">Daily Brief</div>
+      <div class="header-sub"><span class="live-dot"></span>Thursday, 25 June 2026 · Hong Kong</div>
+    </div>
+  </div>
+  <div class="date-badge">
+    <div class="day">Wk 26 · 2026</div>
+    <div class="date">25 Jun</div>
+  </div>
+</div>
+
+<!-- 1. WEATHER -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌦 Hong Kong Weather</div>
+    <div class="panel-body">
+      <div class="wx-row1">
+        <div class="wx-icon">⛅</div>
+        <div class="wx-temp-block">
+          <span class="wx-temp">30</span><span class="wx-unit">°C</span>
+        </div>
+        <div class="wx-desc">
+          <div class="wx-cond">Partly Cloudy · Humid</div>
+          <div class="wx-feels">Feels like 39°C · Bring water</div>
+        </div>
+      </div>
+      <div class="wx-stats">
+        <div class="wx-stat">
+          <div class="wx-stat-val">28°C</div>
+          <div class="wx-stat-label">Low tonight</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--accent)">79%</div>
+          <div class="wx-stat-label">Humidity</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--orange)">39°C</div>
+          <div class="wx-stat-label">Feels like</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val">💧</div>
+          <div class="wx-stat-label">Stay hydrated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. MARKETS TICKER -->
+<div class="section">
+  <div class="markets-wrap">
+    <div class="ticker-outer">
+      <div class="markets-label">📈 Markets</div>
+      <div class="ticker-clip">
+        <div class="ticker-track">
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,358.22</span><span class="tick-chg down">▼ 0.10%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,476.64</span><span class="tick-chg down">▼ 0.43%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">23,412.18</span><span class="tick-chg up">▲ 0.33%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">—</span><span class="tick-chg flat">unavail.</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$69.87</span><span class="tick-chg down">▼ 0.67%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,013</span><span class="tick-chg up">▲ 0.11%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">$60,889</span><span class="tick-chg down">▼ 2.80%</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.84</span><span class="tick-chg flat">→ peg</span></div>
+          <div class="tick"><span class="tick-name">AUD/USD</span><span class="tick-val">0.690</span><span class="tick-chg flat">→ stable</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.40%</span><span class="tick-chg down">▼ 2.0%</span></div>
+          <!-- duplicate for seamless loop -->
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,358.22</span><span class="tick-chg down">▼ 0.10%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,476.64</span><span class="tick-chg down">▼ 0.43%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">23,412.18</span><span class="tick-chg up">▲ 0.33%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">—</span><span class="tick-chg flat">unavail.</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$69.87</span><span class="tick-chg down">▼ 0.67%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,013</span><span class="tick-chg up">▲ 0.11%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">$60,889</span><span class="tick-chg down">▼ 2.80%</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.84</span><span class="tick-chg flat">→ peg</span></div>
+          <div class="tick"><span class="tick-name">AUD/USD</span><span class="tick-val">0.690</span><span class="tick-chg flat">→ stable</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.40%</span><span class="tick-chg down">▼ 2.0%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 5-SECOND BRIEF -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">⚡ 5-Second Brief</div>
+    <div class="panel-body">
+      <div class="bullets-grid">
+        <div class="bullet-item"><span class="bullet-icon">🔴</span><span>Iran nuclear deal stalls — US and Tehran at odds over "inspections into infinity" and $24B in frozen assets; Rubio says talks were "frank"; Geneva round set for next week</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🔵</span><span>Senate 50-48 to check Trump on Iran — 4 Republicans cross party lines; first time both chambers have passed a War Powers resolution in US history; experts say largely symbolic</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TOP STORIES -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">📰 Top Stories <span style="margin-left:6px;background:var(--border);border-radius:20px;padding:1px 8px;font-size:10px;">2</span></div>
+    <div class="panel-body">
+      <div class="stories-grid">
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Geopolitics</span>
+            <span class="story-source">Al Jazeera · Yahoo News</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/liveblog/2026/6/24/iran-war-live-trump-tehran-at-odds-over-nuclear-inspections-hormuz" target="_blank">Iran-US nuclear deal stalls — Trump and Tehran at odds over inspections and $24B in frozen assets</a>
+          </div>
+          <div class="story-summary">Trump demanded inspections "into infinity"; Tehran denies agreeing to those terms. Secretary Rubio called discussions "frank" after Gulf stops. A Treasury general license permits Iran to sell oil through Aug 21. Geneva talks scheduled for next week. Over 50 Iranian hardline MPs plan protests against any concessions.</div>
+        </div>
+
+        <div class="story-card policy">
+          <div class="story-meta">
+            <span class="tag policy">Policy</span>
+            <span class="story-source">Al Jazeera · Yahoo News</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/6/24/us-senate-approves-iran-war-powers-resolution-what-that-means-for-trump" target="_blank">Senate passes Iran War Powers resolution 50-48 — historic first as both chambers have now acted</a>
+          </div>
+          <div class="story-summary">Four Republicans crossed party lines: Cassidy (LA), Murkowski (AK), Collins (ME), and Paul (KY). Resolution directs Trump to halt operations or seek congressional approval. Experts call it largely symbolic as resolutions lack force of law, but it marks the first time both chambers have used War Powers authority against an ongoing conflict. Trump later confronted Cassidy directly at a closed-door GOP meeting.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MARKET SENTIMENT -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌡 Market Sentiment</div>
+    <div class="panel-body">
+      <div class="sentiment-inner">
+        <div class="mood-emoji">😐</div>
+        <div class="mood-center">
+          <div class="mood-title">Cautious · Wait-and-See</div>
+          <div class="mood-detail">US equities edged lower with Nasdaq leading declines (-0.43%). Hang Seng bucked the trend (+0.33%) on regional optimism. Bitcoin fell -2.8% as crypto risk-off extended. Gold held near $4,000. US 10Y yields dropped 2% on day — suggesting flight to safety as Iran deal uncertainty remains. Oil soft at $69.87 as Hormuz reopens but deal details remain contested.</div>
+          <div class="mood-bar-outer">
+            <div class="mood-bar-fill" style="width:57%"></div>
+          </div>
+          <div class="mood-labels"><span>Greed</span><span>Neutral</span><span>Fear</span></div>
+        </div>
+        <div class="mood-right">
+          <div class="mood-score">42</div>
+          <div class="mood-score-label">Fear &amp; Greed<br>Index</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. MARKETS & ECONOMY -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">💰 Markets &amp; Economy</div>
+    <div class="panel-body">
+      <div class="rates-grid">
+        <div class="rate-cell">
+          <div class="rate-cell-label">US Fed Funds</div>
+          <div class="rate-cell-val" style="color:var(--muted)">Hold</div>
+          <span class="rate-trend trend-hold">Hawkish dot plot</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">RBA (AUS)</div>
+          <div class="rate-cell-val" style="color:var(--red)">4.35%</div>
+          <span class="rate-trend trend-up">↑ Hiked May</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">HIBOR 1M (HK)</div>
+          <div class="rate-cell-val" style="color:var(--muted)">—</div>
+          <span class="rate-trend trend-hold">Not sourced</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">US 10Y Yield</div>
+          <div class="rate-cell-val" style="color:var(--accent)">4.40%</div>
+          <span class="rate-trend trend-dn">↓ 2.0% today</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">USD/HKD</div>
+          <div class="rate-cell-val" style="color:var(--accent)">7.84</div>
+          <span class="rate-trend trend-hold">Peg stable</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">AUD/USD</div>
+          <div class="rate-cell-val" style="color:var(--accent)">0.690</div>
+          <span class="rate-trend trend-hold">Stable</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>🤖 Andy · 25 Jun 2026 · Sources: Al Jazeera, Yahoo News, wttr.in, Yahoo Finance, XE.com</span>
+  <span><a href="https://mhigasi-design.github.io/news-dashboard/" target="_blank" style="color:var(--accent);text-decoration:none;">🔗 mhigasi-design.github.io/news-dashboard</a> · Markets: 24 Jun close · Not financial advice</span>
+</div>
+
+</body>
+</html>
