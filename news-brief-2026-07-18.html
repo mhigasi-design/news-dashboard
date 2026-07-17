@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Brief — 18 Jul 2026</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #131920;
+    --surface2: #1a2130;
+    --border: #2a3340;
+    --text: #e6edf3;
+    --muted: #7d8ea0;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #ffa657;
+    --teal: #39d353;
+    --gold: #ffd700;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(88,166,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88,166,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 30s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  @keyframes gridShift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .section {
+    margin-bottom: 14px;
+    animation: fadeUp 0.45s ease both;
+  }
+  .section:nth-child(1) { animation-delay: 0.00s; }
+  .section:nth-child(2) { animation-delay: 0.06s; }
+  .section:nth-child(3) { animation-delay: 0.12s; }
+  .section:nth-child(4) { animation-delay: 0.18s; }
+  .section:nth-child(5) { animation-delay: 0.24s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.36s; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.4s ease both;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .logo {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.2);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+    background: linear-gradient(90deg, #e6edf3 0%, #58a6ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .live-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    margin-right: 4px; vertical-align: middle;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .date-badge {
+    text-align: right;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    flex-shrink: 0;
+  }
+  .date-badge .day  { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
+  .date-badge .date { font-size: 16px; font-weight: 700; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .panel-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.9px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── WEATHER ── */
+  .wx-row1 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .wx-icon { font-size: 44px; line-height: 1; flex-shrink: 0; }
+  .wx-temp-block { flex-shrink: 0; }
+  .wx-temp {
+    font-size: 48px; font-weight: 800; color: var(--orange);
+    line-height: 1; letter-spacing: -3px;
+    display: inline;
+  }
+  .wx-unit { font-size: 22px; color: var(--muted); vertical-align: super; }
+  .wx-desc { margin-top: 4px; }
+  .wx-cond { font-size: 15px; font-weight: 600; color: var(--text); }
+  .wx-feels { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .wx-stats {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .wx-stat {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 6px 10px;
+    border-right: 1px solid var(--border);
+  }
+  .wx-stat:last-child { border-right: none; }
+  .wx-stat-val   { font-size: 18px; font-weight: 700; }
+  .wx-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ── MARKETS TICKER ── */
+  .markets-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .ticker-outer {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .markets-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    padding: 0 14px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.9px; color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ticker-clip {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    animation: tickerScroll 40s linear infinite;
+    will-change: transform;
+    white-space: nowrap;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .tick {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 0 20px;
+    border-right: 1px solid rgba(42,51,64,0.5);
+    flex-shrink: 0;
+  }
+  .tick-name { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .tick-val  { font-size: 14px; font-weight: 700; }
+  .tick-chg  { font-size: 11px; font-weight: 600; }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
+  .flat { color: var(--muted); }
+
+  /* ── 5-SECOND BRIEF ── */
+  .bullets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .bullet-item {
+    display: flex; gap: 9px;
+    align-items: flex-start;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px; line-height: 1.5; color: var(--text);
+  }
+  .bullet-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── TOP STORIES ── */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .story-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    transition: border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .story-card.geo::before     { background: var(--red); }
+  .story-card.markets::before { background: var(--green); }
+  .story-card.conflict::before{ background: var(--orange); }
+  .story-card.culture::before { background: var(--teal); }
+  .story-card.climate::before { background: var(--yellow); }
+  .story-card:hover { border-color: rgba(88,166,255,0.25); }
+
+  .story-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 7px; gap: 6px;
+  }
+  .tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; padding: 2px 7px;
+    border-radius: 4px; border: 1px solid;
+    white-space: nowrap;
+  }
+  .tag.geo      { color: var(--red);    border-color: rgba(248,81,73,0.35);   background: rgba(248,81,73,0.09); }
+  .tag.markets  { color: var(--green);  border-color: rgba(63,185,80,0.35);   background: rgba(63,185,80,0.09); }
+  .tag.conflict { color: var(--orange); border-color: rgba(255,166,87,0.35);  background: rgba(255,166,87,0.09); }
+  .tag.culture  { color: var(--teal);   border-color: rgba(57,211,83,0.35);   background: rgba(57,211,83,0.09); }
+  .tag.climate  { color: var(--yellow); border-color: rgba(210,153,34,0.35);  background: rgba(210,153,34,0.09); }
+
+  .story-source { font-size: 10px; color: var(--muted); flex-shrink: 0; }
+  .story-headline {
+    font-size: 13px; font-weight: 600; line-height: 1.45; margin-bottom: 6px;
+  }
+  .story-headline a { color: var(--text); text-decoration: none; }
+  .story-headline a:hover { color: var(--accent); }
+  .story-summary { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ── SENTIMENT ── */
+  .sentiment-inner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .mood-emoji { font-size: 48px; line-height: 1; flex-shrink: 0; }
+  .mood-center { flex: 1; min-width: 0; }
+  .mood-title  { font-size: 16px; font-weight: 700; color: var(--red); margin-bottom: 3px; }
+  .mood-detail { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .mood-bar-outer {
+    height: 6px; background: var(--border); border-radius: 3px;
+    margin: 10px 0 4px; overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 48%, var(--red) 100%);
+  }
+  .mood-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .mood-right { flex-shrink: 0; text-align: center; }
+  .mood-score {
+    font-size: 38px; font-weight: 800; line-height: 1;
+    color: var(--red); letter-spacing: -2px;
+  }
+  .mood-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-top: 4px; }
+
+  /* ── MARKETS & ECONOMY ── */
+  .markets-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .mkt-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mkt-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); }
+  .mkt-val   { font-size: 16px; font-weight: 800; line-height: 1; }
+  .mkt-chg   { font-size: 10px; font-weight: 600; margin-top: 3px; }
+
+  /* ── RATES ── */
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .rate-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .rate-cell-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .rate-cell-val   { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .rate-trend {
+    display: inline-block;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.3px; padding: 2px 6px; border-radius: 4px;
+  }
+  .trend-up   { color: var(--red);   background: rgba(248,81,73,0.1); }
+  .trend-down { color: var(--green); background: rgba(63,185,80,0.1); }
+  .trend-hold { color: var(--muted); background: rgba(125,142,160,0.1); }
+  .trend-na   { color: var(--muted); background: rgba(125,142,160,0.06); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px;
+    justify-content: space-between;
+    animation: fadeIn 0.6s ease 0.5s both;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="header-title">Daily Brief</div>
+      <div class="header-sub"><span class="live-dot"></span>Saturday, 18 July 2026 · Hong Kong</div>
+    </div>
+  </div>
+  <div class="date-badge">
+    <div class="day">Wk 29 · 2026</div>
+    <div class="date">18 Jul</div>
+  </div>
+</div>
+
+<!-- 1. WEATHER -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌦 Hong Kong Weather</div>
+    <div class="panel-body">
+      <div class="wx-row1">
+        <div class="wx-icon">🌧</div>
+        <div class="wx-temp-block">
+          <span class="wx-temp">26</span><span class="wx-unit">°C</span>
+        </div>
+        <div class="wx-desc">
+          <div class="wx-cond">Drizzle · Very Humid</div>
+          <div class="wx-feels">Feels like 32°C · Typhoon season</div>
+        </div>
+      </div>
+      <div class="wx-stats">
+        <div class="wx-stat">
+          <div class="wx-stat-val">30°C</div>
+          <div class="wx-stat-label">High today</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--accent)">96%</div>
+          <div class="wx-stat-label">Humidity</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--yellow)">96%</div>
+          <div class="wx-stat-label">Rain prob.</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val">🌂</div>
+          <div class="wx-stat-label">Bring umbrella</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. MARKETS TICKER -->
+<div class="section">
+  <div class="markets-wrap">
+    <div class="ticker-outer">
+      <div class="markets-label">📈 Markets</div>
+      <div class="ticker-clip">
+        <div class="ticker-track">
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,457.68</span><span class="tick-chg down">▼ 1.01%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,520.24</span><span class="tick-chg down">▼ 1.40%</span></div>
+          <div class="tick"><span class="tick-name">Dow</span><span class="tick-val">52,146.42</span><span class="tick-chg down">▼ 0.77%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">24,562.24</span><span class="tick-chg down">▼ 1.78%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">8,796.70</span><span class="tick-chg down">▼ 0.50%</span></div>
+          <div class="tick"><span class="tick-name">Nikkei</span><span class="tick-val">64,141.12</span><span class="tick-chg down">▼ 4.03%</span></div>
+          <div class="tick"><span class="tick-name">WTI Oil</span><span class="tick-val">$81.77</span><span class="tick-chg up">▲ 4.46%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,023</span><span class="tick-chg up">▲ 0.77%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">$63,910</span><span class="tick-chg up">▲ 0.22%</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.54%</span><span class="tick-chg down">▼ 2bp</span></div>
+          <div class="tick"><span class="tick-name">AUD/USD</span><span class="tick-val">0.698</span><span class="tick-chg down">▼</span></div>
+          <!-- duplicate for seamless loop -->
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,457.68</span><span class="tick-chg down">▼ 1.01%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,520.24</span><span class="tick-chg down">▼ 1.40%</span></div>
+          <div class="tick"><span class="tick-name">Dow</span><span class="tick-val">52,146.42</span><span class="tick-chg down">▼ 0.77%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">24,562.24</span><span class="tick-chg down">▼ 1.78%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">8,796.70</span><span class="tick-chg down">▼ 0.50%</span></div>
+          <div class="tick"><span class="tick-name">Nikkei</span><span class="tick-val">64,141.12</span><span class="tick-chg down">▼ 4.03%</span></div>
+          <div class="tick"><span class="tick-name">WTI Oil</span><span class="tick-val">$81.77</span><span class="tick-chg up">▲ 4.46%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">$4,023</span><span class="tick-chg up">▲ 0.77%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">$63,910</span><span class="tick-chg up">▲ 0.22%</span></div>
+          <div class="tick"><span class="tick-name">US 10Y</span><span class="tick-val">4.54%</span><span class="tick-chg down">▼ 2bp</span></div>
+          <div class="tick"><span class="tick-name">AUD/USD</span><span class="tick-val">0.698</span><span class="tick-chg down">▼</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 5-SECOND BRIEF -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">⚡ 5-Second Brief</div>
+    <div class="panel-body">
+      <div class="bullets-grid">
+        <div class="bullet-item"><span class="bullet-icon">🔴</span><span>US-Iran night 7: US hits bridges near Hormuz; Iran retaliates by striking Kuwait's power and desalination plant — IRGC warns of "full-scale offensive" if strikes continue 2–3 more days</span></div>
+        <div class="bullet-item"><span class="bullet-icon">☢️</span><span>Bushehr satellite imagery shows new impact scars inside Iran's only nuclear reactor — IAEA: "nuclear facilities must never be targeted"</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🇬🇧</span><span>Andy Burnham confirmed UK's 7th PM in a decade — takes office Monday July 21, vows to "give hope back to Britons"</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🌫️</span><span>Canada's 835+ wildfires choke US cities — Detroit ranked world's worst air; Trump threatens "incalculable cost" tariff hike on Ottawa</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🏴‍☠️</span><span>Suspected Somali pirates seize chemical tanker Asana off Yemen — 18th Gulf of Aden hijacking since April as naval forces stretch thin across two conflicts</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TOP STORIES -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">📰 Top Stories <span style="margin-left:6px;background:var(--border);border-radius:20px;padding:1px 8px;font-size:10px;">5</span></div>
+    <div class="panel-body">
+      <div class="stories-grid">
+
+        <div class="story-card conflict">
+          <div class="story-meta">
+            <span class="tag conflict">Conflict · Day 141</span>
+            <span class="story-source">SCMP · Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.scmp.com/news/world/middle-east/article/3361019/us-and-iran-attack-infrastructure-raising-fears-escalation" target="_blank">US strikes bridges near Hormuz; Iran hits Kuwait power and water plant</a>
+          </div>
+          <div class="story-summary">Seventh consecutive night of US air strikes targeted road and rail bridges in Bandar Khamir County near the Strait. Iran's IRGC retaliated by destroying "a large number of electricity generation units" at a Kuwaiti power and desalination facility, triggering fires. IRGC warns it is moving "beyond the military phase" toward full-scale offensive operations if attacks continue 2–3 more days. 8 reported killed in Iran since overnight strikes.</div>
+        </div>
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Nuclear Safety</span>
+            <span class="story-source">Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/7/17/satellite-images-show-damage-inside-irans-bushehr-nuclear-power-plant" target="_blank">Satellite images confirm strike damage inside Iran's Bushehr nuclear plant</a>
+          </div>
+          <div class="story-summary">Imagery from July 7–12 shows newly formed impact scars inside the Bushehr complex and nearby support facilities. Iran denies the reactor was hit. IAEA issued a sharp warning: "Nuclear facilities should never become targets of armed attacks because of the potential consequences for people and the environment." The plant holds operational fuel; damage to cooling systems would be critically dangerous.</div>
+        </div>
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Geopolitics</span>
+            <span class="story-source">SCMP · Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.scmp.com/news/world/europe/article/3361003/uks-next-prime-minister-andy-burnham-vows-give-hope-back-britons" target="_blank">Andy Burnham to become UK's 7th prime minister in a decade — takes office Monday</a>
+          </div>
+          <div class="story-summary">Labour confirmed the former Manchester mayor as its new leader at a special conference Friday. He automatically becomes PM Monday July 21 given Labour's parliamentary supermajority from the 2024 election. Burnham, who left Parliament nine years ago, returned just four weeks before his selection. He has vowed to counter Farage's surging Reform UK and restore public hope.</div>
+        </div>
+
+        <div class="story-card climate">
+          <div class="story-meta">
+            <span class="tag climate">Climate</span>
+            <span class="story-source">SCMP · Al Jazeera</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.scmp.com/news/world/united-states-canada/article/3361020/trump-blames-canada-wildfire-smoke-says-hell-add-cost-tariffs" target="_blank">Trump threatens Canada with tariff escalation over wildfire smoke choking US cities</a>
+          </div>
+          <div class="story-summary">835+ Canadian wildfires burning 1.9M hectares blanketed Detroit (ranked world's worst air quality), Washington DC, Chicago and New York with hazardous smoke Friday. Trump blamed Canada for "mismanagement" and said the "incalculable cost" would be added to existing tariffs. World Cup organisers are monitoring whether smoke will affect Sunday's Spain vs Argentina final in Los Angeles's open stadium.</div>
+        </div>
+
+        <div class="story-card conflict">
+          <div class="story-meta">
+            <span class="tag conflict">Maritime Security</span>
+            <span class="story-source">Al Jazeera · SCMP</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/7/17/suspected-somali-pirates-seize-tanker-near-yemen-amid-wave-of-hijackings" target="_blank">Somali pirates seize chemical tanker off Yemen — 18th Gulf of Aden hijacking since April</a>
+          </div>
+          <div class="story-summary">The tanker Asana was seized approximately 65 nautical miles south of Mukalla port in Hadramawt waters, with Bosaso listed as next destination. France's Mica Centre has tracked 18 piracy incidents in the Gulf of Aden since April, with 3 vessels still held for ransom. Analysts cite stretched naval forces managing concurrent regional conflicts and altered shipping routes bringing vessels closer to Somali waters.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MARKET SENTIMENT -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌡 Market Sentiment</div>
+    <div class="panel-body">
+      <div class="sentiment-inner">
+        <div class="mood-emoji">😱</div>
+        <div class="mood-center">
+          <div class="mood-title">War Risk — Extreme Fear</div>
+          <div class="mood-detail">Broad global selloff: Nikkei –4%, Hang Seng –1.78%, Nasdaq –1.4%. WTI oil surged +4.46% to $81.77 on IRGC threatening "full-scale offensive" as Iran struck Kuwait's power infrastructure for the first time. Gold up on safe-haven flows. Flight to US bonds pushed 10Y yield down 2bp to 4.54%. Iran's escalation to civilian infrastructure and satellite-confirmed Bushehr nuclear damage are re-pricing geopolitical risk across all asset classes.</div>
+          <div class="mood-bar-outer">
+            <div class="mood-bar-fill" style="width:80%"></div>
+          </div>
+          <div class="mood-labels"><span>Greed</span><span>Neutral</span><span>Fear</span></div>
+        </div>
+        <div class="mood-right">
+          <div class="mood-score">18</div>
+          <div class="mood-score-label">Fear &amp; Greed<br>Index</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. MARKETS & ECONOMY -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">📊 Markets &amp; Economy</div>
+    <div class="panel-body">
+      <div class="markets-section-grid">
+        <div class="mkt-cell">
+          <div><div class="mkt-label">S&amp;P 500</div><div class="mkt-val" style="color:var(--red)">7,457.68</div><div class="mkt-chg down">▼ 1.01% · Fri close</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">Nasdaq</div><div class="mkt-val" style="color:var(--red)">25,520.24</div><div class="mkt-chg down">▼ 1.40% · Fri close</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">Hang Seng</div><div class="mkt-val" style="color:var(--red)">24,562.24</div><div class="mkt-chg down">▼ 1.78% · Fri close</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">Nikkei 225</div><div class="mkt-val" style="color:var(--red)">64,141.12</div><div class="mkt-chg down">▼ 4.03% · Fri close</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">ASX 200</div><div class="mkt-val" style="color:var(--red)">8,796.70</div><div class="mkt-chg down">▼ 0.50% · Fri close</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">WTI Crude</div><div class="mkt-val" style="color:var(--orange)">$81.77</div><div class="mkt-chg up">▲ 4.46% · Hormuz risk</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">Gold</div><div class="mkt-val" style="color:var(--gold)">$4,023</div><div class="mkt-chg up">▲ 0.77% · Safe haven</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">US 10Y Yield</div><div class="mkt-val" style="color:var(--accent)">4.54%</div><div class="mkt-chg down">▼ 2bp · Flight to safety</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">Bitcoin</div><div class="mkt-val" style="color:var(--yellow)">$63,910</div><div class="mkt-chg up">▲ 0.22%</div></div>
+        </div>
+        <div class="mkt-cell">
+          <div><div class="mkt-label">AUD / USD</div><div class="mkt-val" style="color:var(--muted)">0.698</div><div class="mkt-chg down">▼ · Mid-market rate</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. INTEREST RATES & INFLATION -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">💰 Interest Rates &amp; Inflation</div>
+    <div class="panel-body">
+      <div class="rates-grid">
+        <div class="rate-cell">
+          <div class="rate-cell-label">US Fed (Warsh)</div>
+          <div class="rate-cell-val" style="color:var(--yellow)">Hike signal</div>
+          <span class="rate-trend trend-up">↑ Dot plot</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">RBA (AU)</div>
+          <div class="rate-cell-val" style="color:var(--red)">4.35%</div>
+          <span class="rate-trend trend-up">↑ Hiked May</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">HIBOR 1M (HK)</div>
+          <div class="rate-cell-val" style="color:var(--muted)">N/A</div>
+          <span class="rate-trend trend-na">Unavailable</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">USD / HKD</div>
+          <div class="rate-cell-val" style="color:var(--muted)">N/A</div>
+          <span class="rate-trend trend-na">Unavailable</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">US CPI (Jun)</div>
+          <div class="rate-cell-val" style="color:var(--green)">3.5%</div>
+          <span class="rate-trend trend-down">↓ Falling</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">AU CPI (Q1)</div>
+          <div class="rate-cell-val" style="color:var(--yellow)">3.6%</div>
+          <span class="rate-trend trend-hold">Sticky</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>🤖 Andy · 18 Jul 2026 · Sources: SCMP, Al Jazeera, Yahoo Finance, Investing.com, Open-Meteo</span>
+  <span><a href="https://mhigasi-design.github.io/news-dashboard/" target="_blank" style="color:var(--accent);text-decoration:none;">🔗 mhigasi-design.github.io/news-dashboard</a> · Data: Fri 17 Jul close · Markets live at time of fetch · Not financial advice</span>
+</div>
+
+</body>
+</html>
