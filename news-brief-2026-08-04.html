@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Brief — 4 August 2026</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #131920;
+    --surface2: #1a2130;
+    --border: #2a3340;
+    --text: #e6edf3;
+    --muted: #7d8ea0;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #ffa657;
+    --teal: #39d353;
+    --gold: #ffd700;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px 16px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(88,166,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88,166,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 30s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  @keyframes gridShift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .section {
+    margin-bottom: 14px;
+    animation: fadeUp 0.45s ease both;
+  }
+  .section:nth-child(1) { animation-delay: 0.00s; }
+  .section:nth-child(2) { animation-delay: 0.06s; }
+  .section:nth-child(3) { animation-delay: 0.12s; }
+  .section:nth-child(4) { animation-delay: 0.18s; }
+  .section:nth-child(5) { animation-delay: 0.24s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.36s; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.4s ease both;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .logo {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.2);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-size: 19px; font-weight: 700; letter-spacing: -0.3px;
+    background: linear-gradient(90deg, #e6edf3 0%, #58a6ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .live-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    margin-right: 4px; vertical-align: middle;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .date-badge {
+    text-align: right;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    flex-shrink: 0;
+  }
+  .date-badge .day  { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
+  .date-badge .date { font-size: 16px; font-weight: 700; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .panel-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.9px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── WEATHER ── */
+  .wx-row1 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .wx-icon { font-size: 44px; line-height: 1; flex-shrink: 0; }
+  .wx-temp-block { flex-shrink: 0; }
+  .wx-temp {
+    font-size: 48px; font-weight: 800; color: var(--orange);
+    line-height: 1; letter-spacing: -3px;
+    display: inline;
+  }
+  .wx-unit { font-size: 22px; color: var(--muted); vertical-align: super; }
+  .wx-desc { margin-top: 4px; }
+  .wx-cond { font-size: 15px; font-weight: 600; color: var(--text); }
+  .wx-feels { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .wx-stats {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .wx-stat {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 6px 10px;
+    border-right: 1px solid var(--border);
+  }
+  .wx-stat:last-child { border-right: none; }
+  .wx-stat-val   { font-size: 18px; font-weight: 700; }
+  .wx-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ── MARKETS TICKER ── */
+  .markets-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .ticker-outer {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .markets-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    padding: 0 14px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.9px; color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ticker-clip {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    animation: tickerScroll 40s linear infinite;
+    will-change: transform;
+    white-space: nowrap;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .tick {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 0 20px;
+    border-right: 1px solid rgba(42,51,64,0.5);
+    flex-shrink: 0;
+  }
+  .tick-name { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .tick-val  { font-size: 14px; font-weight: 700; }
+  .tick-chg  { font-size: 11px; font-weight: 600; }
+  .up   { color: var(--green); }
+  .down { color: var(--red); }
+  .flat { color: var(--muted); }
+
+  /* ── 5-SECOND BRIEF ── */
+  .bullets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .bullet-item {
+    display: flex; gap: 9px;
+    align-items: flex-start;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px; line-height: 1.5; color: var(--text);
+  }
+  .bullet-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── TOP STORIES ── */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .story-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    transition: border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .story-card.geo::before     { background: var(--red); }
+  .story-card.markets::before { background: var(--green); }
+  .story-card.conflict::before{ background: var(--orange); }
+  .story-card.culture::before { background: var(--teal); }
+  .story-card:hover { border-color: rgba(88,166,255,0.25); }
+
+  .story-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 7px; gap: 6px;
+  }
+  .tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; padding: 2px 7px;
+    border-radius: 4px; border: 1px solid;
+    white-space: nowrap;
+  }
+  .tag.geo      { color: var(--red);    border-color: rgba(248,81,73,0.35);   background: rgba(248,81,73,0.09); }
+  .tag.markets  { color: var(--green);  border-color: rgba(63,185,80,0.35);   background: rgba(63,185,80,0.09); }
+  .tag.conflict { color: var(--orange); border-color: rgba(255,166,87,0.35);  background: rgba(255,166,87,0.09); }
+  .tag.culture  { color: var(--teal);   border-color: rgba(57,211,83,0.35);   background: rgba(57,211,83,0.09); }
+
+  .story-source { font-size: 10px; color: var(--muted); flex-shrink: 0; }
+  .story-headline {
+    font-size: 13px; font-weight: 600; line-height: 1.45; margin-bottom: 6px;
+  }
+  .story-headline a { color: var(--text); text-decoration: none; }
+  .story-headline a:hover { color: var(--accent); }
+  .story-summary { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ── SENTIMENT ── */
+  .sentiment-inner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .mood-emoji { font-size: 48px; line-height: 1; flex-shrink: 0; }
+  .mood-center { flex: 1; min-width: 0; }
+  .mood-title  { font-size: 16px; font-weight: 700; color: var(--orange); margin-bottom: 3px; }
+  .mood-detail { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .mood-bar-outer {
+    height: 6px; background: var(--border); border-radius: 3px;
+    margin: 10px 0 4px; overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 48%, var(--red) 100%);
+  }
+  .mood-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .mood-right { flex-shrink: 0; text-align: center; }
+  .mood-score {
+    font-size: 38px; font-weight: 800; line-height: 1;
+    color: var(--yellow); letter-spacing: -2px;
+  }
+  .mood-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-top: 4px; }
+
+  /* ── RATES ── */
+  .rates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .rate-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .rate-cell-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .rate-cell-val   { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .rate-trend {
+    display: inline-block;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.3px; padding: 2px 6px; border-radius: 4px;
+  }
+  .trend-up   { color: var(--red);   background: rgba(248,81,73,0.1); }
+  .trend-hold { color: var(--muted); background: rgba(125,142,160,0.1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px;
+    justify-content: space-between;
+    animation: fadeIn 0.6s ease 0.5s both;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="header-title">Daily Brief</div>
+      <div class="header-sub"><span class="live-dot"></span>Tuesday, 4 August 2026 · Hong Kong</div>
+    </div>
+  </div>
+  <div class="date-badge">
+    <div class="day">Wk 32 · 2026</div>
+    <div class="date">4 Aug</div>
+  </div>
+</div>
+
+<!-- 1. WEATHER -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌦 Hong Kong Weather</div>
+    <div class="panel-body">
+      <div class="wx-row1">
+        <div class="wx-icon">⛈</div>
+        <div class="wx-temp-block">
+          <span class="wx-temp">30</span><span class="wx-unit">°C</span>
+        </div>
+        <div class="wx-desc">
+          <div class="wx-cond">Hot, humid · Thunderstorms likely</div>
+          <div class="wx-feels">High UV · ~80% chance of afternoon rain</div>
+        </div>
+      </div>
+      <div class="wx-stats">
+        <div class="wx-stat">
+          <div class="wx-stat-val">24°C</div>
+          <div class="wx-stat-label">Low tonight</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--accent)">High</div>
+          <div class="wx-stat-label">Humidity</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val" style="color:var(--yellow)">80%</div>
+          <div class="wx-stat-label">Rain chance</div>
+        </div>
+        <div class="wx-stat">
+          <div class="wx-stat-val">🌂</div>
+          <div class="wx-stat-label">Bring umbrella</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. MARKETS TICKER -->
+<div class="section">
+  <div class="markets-wrap">
+    <div class="ticker-outer">
+      <div class="markets-label">📈 Markets</div>
+      <div class="ticker-clip">
+        <div class="ticker-track">
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,600.50</span><span class="tick-chg up">▲ 1.48%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,913.90</span><span class="tick-chg up">▲ 2.13%</span></div>
+          <div class="tick"><span class="tick-name">Dow</span><span class="tick-val">53,178.41</span><span class="tick-chg up">▲ 1.32%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">~26,009</span><span class="tick-chg up">▲ 0.5%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">9,019</span><span class="tick-chg up">▲ 0.5%</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$80.34</span><span class="tick-chg down">▼ 5.1%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">~$4,051</span><span class="tick-chg up">▲ 0.3%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">~$63.4k</span><span class="tick-chg down">▼ 0.6%</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.842</span><span class="tick-chg flat">→ flat</span></div>
+          <!-- duplicate for seamless loop -->
+          <div class="tick"><span class="tick-name">S&amp;P 500</span><span class="tick-val">7,600.50</span><span class="tick-chg up">▲ 1.48%</span></div>
+          <div class="tick"><span class="tick-name">Nasdaq</span><span class="tick-val">25,913.90</span><span class="tick-chg up">▲ 2.13%</span></div>
+          <div class="tick"><span class="tick-name">Dow</span><span class="tick-val">53,178.41</span><span class="tick-chg up">▲ 1.32%</span></div>
+          <div class="tick"><span class="tick-name">Hang Seng</span><span class="tick-val">~26,009</span><span class="tick-chg up">▲ 0.5%</span></div>
+          <div class="tick"><span class="tick-name">ASX 200</span><span class="tick-val">9,019</span><span class="tick-chg up">▲ 0.5%</span></div>
+          <div class="tick"><span class="tick-name">Oil WTI</span><span class="tick-val">$80.34</span><span class="tick-chg down">▼ 5.1%</span></div>
+          <div class="tick"><span class="tick-name">Gold</span><span class="tick-val">~$4,051</span><span class="tick-chg up">▲ 0.3%</span></div>
+          <div class="tick"><span class="tick-name">Bitcoin</span><span class="tick-val">~$63.4k</span><span class="tick-chg down">▼ 0.6%</span></div>
+          <div class="tick"><span class="tick-name">USD/HKD</span><span class="tick-val">7.842</span><span class="tick-chg flat">→ flat</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 5-SECOND BRIEF -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">⚡ 5-Second Brief</div>
+    <div class="panel-body">
+      <div class="bullets-grid">
+        <div class="bullet-item"><span class="bullet-icon">🔴</span><span>Iran says it's only talking to Oman, not the US — Trump calls fresh talks Tehran's "last chance" before US strikes escalate</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🟠</span><span>Russia and Ukraine trade heavy attacks — 22 killed combined, including 7 (3 children) when drone debris hit a Black Sea resort beach</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🔴</span><span>EU calls for stronger borders after mass migrant crossings into Spain's Ceuta enclave — hundreds of unaccompanied minors reportedly stranded</span></div>
+        <div class="bullet-item"><span class="bullet-icon">🟢</span><span>US and Japan jointly intervene to prop up the yen in a rare coordinated move, as the dollar weakens sharply against it</span></div>
+        <div class="bullet-item"><span class="bullet-icon">⚪</span><span>Rhine and Danube hit record-low levels — Europe's drought forces Romania to blast rock to divert Danube water to a nuclear reactor</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TOP STORIES -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">📰 Top Stories <span style="margin-left:6px;background:var(--border);border-radius:20px;padding:1px 8px;font-size:10px;">5</span></div>
+    <div class="panel-body">
+      <div class="stories-grid">
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Geopolitics</span>
+            <span class="story-source">BBC · AP · Al Jazeera · Guardian</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.bbc.com/news/articles/c23579jzv08o" target="_blank">Iran says it is in talks with Oman but not the US — Trump calls new talks Tehran's "last chance"</a>
+          </div>
+          <div class="story-summary">Tehran denies direct US talks despite Trump's claim negotiations would resume, prompting a sharp rebuke from Washington. Trump says the fresh round is Iran's last chance to strike a deal before strikes escalate further, as the conflict passes the 100-day mark.</div>
+        </div>
+
+        <div class="story-card conflict">
+          <div class="story-meta">
+            <span class="tag conflict">Conflict</span>
+            <span class="story-source">BBC · Al Jazeera · Guardian</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.aljazeera.com/news/2026/8/3/more-than-10-killed-as-russia-and-ukraine-trade-heavy-attacks" target="_blank">At least 22 killed as Russia and Ukraine trade heavy attacks</a>
+          </div>
+          <div class="story-summary">Eleven killed on each side: drone debris struck the Russian Black Sea resort of Arkhipo-Osipovka, killing seven including three children and wounding nearly 40; in Ukraine, eight died in an overnight strike on Zaporizhzhia and three more at a petrol station in Kryvyi Rih.</div>
+        </div>
+
+        <div class="story-card geo">
+          <div class="story-meta">
+            <span class="tag geo">Migration</span>
+            <span class="story-source">BBC · Al Jazeera · Guardian</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.bbc.com/news/articles/cyvl84zmgyro" target="_blank">Ceuta: EU calls for stronger borders after migrant crossings into Spanish territory</a>
+          </div>
+          <div class="story-summary">European Commission President Ursula von der Leyen calls for tougher border measures ahead of an urgent EU interior ministers meeting, as hundreds of unaccompanied migrant minors remain stranded in the Spanish North African enclave following the mass crossing from Morocco.</div>
+        </div>
+
+        <div class="story-card markets">
+          <div class="story-meta">
+            <span class="tag markets">Economy</span>
+            <span class="story-source">BBC · AP · Guardian</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.bbc.com/news/articles/cglj1pr0wjwo" target="_blank">US and Japan take action to prop up yen in rare joint move</a>
+          </div>
+          <div class="story-summary">Washington and Tokyo intervened jointly after the dollar weakened sharply against the yen, with both governments signalling they won't hesitate to act again. The move comes as US equities rallied to record highs on Iran de-escalation hopes and falling oil prices.</div>
+        </div>
+
+        <div class="story-card culture">
+          <div class="story-meta">
+            <span class="tag culture">Climate</span>
+            <span class="story-source">BBC · Guardian</span>
+          </div>
+          <div class="story-headline">
+            <a href="https://www.bbc.com/news/articles/c78gn8zvrx4o" target="_blank">Rhine falls to record low levels as drought strains Europe's rivers</a>
+          </div>
+          <div class="story-summary">Low water on the Rhine, Danube and Po has curtailed goods transport and cut electricity output. Romania has resorted to blasting rock to divert Danube water toward a nuclear reactor amid a broader south-eastern European heatwave and energy crunch.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. MARKET SENTIMENT -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">🌡 Market Sentiment</div>
+    <div class="panel-body">
+      <div class="sentiment-inner">
+        <div class="mood-emoji">🚀</div>
+        <div class="mood-center">
+          <div class="mood-title">Risk-On — Records Across the Board</div>
+          <div class="mood-detail">Dow closed at a record high, with the S&amp;P 500 and Nasdaq both surging as oil prices fell 5.1% on renewed hopes for US-Iran diplomacy. Amazon topped a $3T market cap for the first time and Big Tech names (Nvidia, Meta, Alphabet, Microsoft) led the rally. CNN's Fear &amp; Greed Index could not be verified live for today — last confirmed reading (2 Aug) was 42, "Fear."</div>
+          <div class="mood-bar-outer">
+            <div class="mood-bar-fill" style="width:42%"></div>
+          </div>
+          <div class="mood-labels"><span>Greed</span><span>Neutral</span><span>Fear</span></div>
+        </div>
+        <div class="mood-right">
+          <div class="mood-score">—</div>
+          <div class="mood-score-label">Fear &amp; Greed<br>Not verified today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. INTEREST RATES -->
+<div class="section">
+  <div class="panel">
+    <div class="panel-head">💰 Interest Rates &amp; Inflation</div>
+    <div class="panel-body">
+      <div class="rates-grid">
+        <div class="rate-cell">
+          <div class="rate-cell-label">US Fed Funds</div>
+          <div class="rate-cell-val" style="color:var(--accent)">3.50–3.75%</div>
+          <span class="rate-trend trend-hold">Hold</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">RBA (AUS)</div>
+          <div class="rate-cell-val" style="color:var(--accent)">4.35%</div>
+          <span class="rate-trend trend-hold">Hold · next 11 Aug</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">HIBOR 1M (HK)</div>
+          <div class="rate-cell-val" style="color:var(--accent)">2.66%</div>
+          <span class="rate-trend trend-hold">Stable</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">US 10Y Yield</div>
+          <div class="rate-cell-val" style="color:var(--accent)">4.70%</div>
+          <span class="rate-trend trend-hold">Eased</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">USD/HKD</div>
+          <div class="rate-cell-val" style="color:var(--accent)">7.842</div>
+          <span class="rate-trend trend-hold">Flat</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">AUD/USD</div>
+          <div class="rate-cell-val" style="color:var(--accent)">0.698</div>
+          <span class="rate-trend trend-hold">Flat</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">US CPI (Jun)</div>
+          <div class="rate-cell-val" style="color:var(--yellow)">3.5%</div>
+          <span class="rate-trend trend-hold">Cooling</span>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-cell-label">AU CPI (Q2)</div>
+          <div class="rate-cell-val" style="color:var(--yellow)">3.8%</div>
+          <span class="rate-trend trend-hold">Sticky</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>🤖 Andy · 4 August 2026 · Sources: BBC, AP, Al Jazeera, The Guardian, CNBC</span>
+  <span><a href="https://mhigasi-design.github.io/news-dashboard/" target="_blank" style="color:var(--accent);text-decoration:none;">🔗 mhigasi-design.github.io/news-dashboard</a> · Data: Mon 3 Aug close · Markets approximate · Not financial advice</span>
+</div>
+
+</body>
+</html>
